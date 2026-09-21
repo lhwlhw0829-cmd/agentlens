@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agentlens"
+version = "0.1.0"
+description = "Lightweight instrumentation SDK for AgentLens: trace, cost, and anomaly observability for LLM agents"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+dependencies = [
+  "requests>=2.28",
+]
+
+[tool.setuptools.packages.find]
+include = ["agentlens*"]
