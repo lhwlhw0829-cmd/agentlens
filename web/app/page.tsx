@@ -1,21 +1,23 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { StatCard } from "@/components/StatCard";
 import { CostChart } from "@/components/CostChart";
+import { CostProjection } from "@/components/CostProjection";
 import { TraceDetailPanel } from "@/components/TraceDetailPanel";
 import { IconAlert, IconBolt, IconGauge, IconLayers, IconSearch } from "@/components/icons";
 import { Trace, TraceSummary } from "@/lib/types";
 import { fmtCost, timeAgo } from "@/lib/format";
 
 const STATUS_DOT: Record<string, string> = {
-  success: "bg-accent",
+  success: "bg-ok",
   error: "bg-danger",
   running: "bg-warn",
 };
 
 const STATUS_TEXT: Record<string, string> = {
-  success: "text-accent",
+  success: "text-ok",
   error: "text-danger",
   running: "text-warn",
 };
@@ -70,6 +72,22 @@ export default function DashboardPage() {
 
   return (
     <main className="mx-auto max-w-7xl px-8 py-8">
+      <Link
+        href="/compare"
+        className="glass mb-6 flex items-center justify-between rounded-2xl border border-accent/20 px-5 py-3 text-sm transition hover:border-accent/40"
+      >
+        <span className="flex items-center gap-2">
+          <span className="rounded-full bg-gradient-to-r from-accent to-accent2 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white">
+            New
+          </span>
+          <span className="text-white">Regression Diff</span>
+          <span className="text-muted">
+            — compare two traces to catch agent behavior drift before it ships
+          </span>
+        </span>
+        <span className="text-accent2">Try it →</span>
+      </Link>
+
       <header className="mb-8 flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Overview</h1>
@@ -120,7 +138,7 @@ export default function DashboardPage() {
       </section>
 
       <section className="mb-6 grid grid-cols-1 gap-4 lg:grid-cols-3">
-        <div className="rounded-xl border border-border bg-panel p-5 lg:col-span-2">
+        <div className="glass rounded-2xl border border-white/5 p-5 shadow-card lg:col-span-2">
           <div className="mb-3 flex items-center justify-between">
             <h2 className="text-sm font-medium">Cost trend</h2>
             <span className="text-xs text-muted">per trace, chronological</span>
@@ -128,7 +146,7 @@ export default function DashboardPage() {
           <CostChart summaries={summaries} />
         </div>
 
-        <div className="rounded-xl border border-border bg-panel p-5">
+        <div className="glass rounded-2xl border border-white/5 p-5 shadow-card">
           <div className="mb-3 flex items-center justify-between">
             <h2 className="text-sm font-medium">Alert feed</h2>
             <span className="rounded-full bg-danger/10 px-2 py-0.5 text-[11px] text-danger">
@@ -142,7 +160,7 @@ export default function DashboardPage() {
             {anomalies.map((a, i) => (
               <div
                 key={i}
-                className="rounded-lg border border-border bg-black/20 p-2.5 text-xs"
+                className="rounded-lg border border-white/5 bg-black/30 p-2.5 text-xs"
               >
                 <div className="flex items-center justify-between">
                   <span className="font-medium">{a.agentName}</span>
@@ -159,14 +177,18 @@ export default function DashboardPage() {
         </div>
       </section>
 
-      <section id="traces" className="rounded-xl border border-border bg-panel">
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-5 py-4">
+      <section className="mb-6">
+        <CostProjection summaries={summaries} />
+      </section>
+
+      <section id="traces" className="glass rounded-2xl border border-white/5 shadow-card">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/5 px-5 py-4">
           <h2 className="text-sm font-medium">Traces</h2>
           <div className="flex items-center gap-2 text-xs">
             <select
               value={agentFilter}
               onChange={(e) => setAgentFilter(e.target.value)}
-              className="rounded-md border border-border bg-black/20 px-2 py-1.5 text-xs outline-none"
+              className="rounded-md border border-border bg-black/30 px-2 py-1.5 text-xs outline-none"
             >
               <option value="all">All agents</option>
               {agentNames.map((a) => (
@@ -181,7 +203,7 @@ export default function DashboardPage() {
                 onClick={() => setStatusFilter(s)}
                 className={`rounded-md border px-2.5 py-1.5 capitalize transition ${
                   statusFilter === s
-                    ? "border-accent/50 bg-accent/10 text-accent"
+                    ? "border-accent/50 bg-accent/10 text-accent2"
                     : "border-border text-muted hover:text-white"
                 }`}
               >
@@ -191,7 +213,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="divide-y divide-border">
+        <div className="divide-y divide-white/5">
           {loading && (
             <div className="px-5 py-6 text-sm text-muted">Loading traces…</div>
           )}

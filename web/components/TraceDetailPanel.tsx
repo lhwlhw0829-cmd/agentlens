@@ -6,7 +6,7 @@ import { IconClose } from "./icons";
 import { fmtCost, timeAgo } from "@/lib/format";
 
 const STATUS_STYLE: Record<string, string> = {
-  success: "text-accent bg-accent/10",
+  success: "text-ok bg-ok/10",
   error: "text-danger bg-danger/10",
   running: "text-warn bg-warn/10",
 };
@@ -33,13 +33,13 @@ export function TraceDetailPanel({
         }`}
       />
       <div
-        className={`absolute inset-y-0 right-0 flex w-full max-w-xl flex-col border-l border-border bg-bg transition-transform duration-200 ${
+        className={`glass absolute inset-y-0 right-0 flex w-full max-w-xl flex-col border-l border-white/5 transition-transform duration-300 ease-out ${
           trace ? "translate-x-0" : "translate-x-full"
         }`}
       >
         {trace && (
           <>
-            <div className="flex items-start justify-between border-b border-border px-6 py-5">
+            <div className="flex items-start justify-between border-b border-white/5 px-6 py-5">
               <div>
                 <div className="text-xs text-muted">{trace.id}</div>
                 <div className="mt-1 text-lg font-semibold">{trace.agentName}</div>

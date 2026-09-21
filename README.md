@@ -14,6 +14,22 @@ cost spikes, latency blowups, and silent errors.
 > problem, and it's the same gap products like LangSmith, Langfuse, and
 > Datadog's LLM Observability are being built (and sold) to close.
 
+## The headline feature: Regression Diff
+
+Every observability tool shows you *one* trace at a time. The question that
+actually keeps engineers up at night is different: **"I changed the prompt
+(or swapped models, or tweaked a tool) — did I just break this agent?"**
+
+AgentLens diffs two traces from the same agent — before/after a change —
+and computes:
+- a **step-by-step diff** (added/removed/reordered tool calls, LCS-based)
+- **cost and latency delta** between the two runs
+- a single **drift score (0–100)** with a stable / moderate / high verdict
+
+This reframes the product from "a dashboard" to **CI for agent behavior** —
+the same instinct as a diff/regression test suite, applied to something
+that's normally opaque. See it at [`/compare`](web/app/compare/page.tsx).
+
 ## Why this exists
 
 As of 2026, most engineering teams have at least one LLM agent running in
@@ -112,14 +128,20 @@ Postgres-backed implementation (e.g. Vercel Postgres or Supabase) — the
 | `latency` | Any single step exceeds a configurable duration threshold |
 | `error` | Any step reports an error |
 
+## Feature map
+
+| Page | What it does |
+|---|---|
+| `/` Overview | Cost trend chart, live alert feed, cost-at-scale projection calculator, filterable trace table, slide-over trace inspector |
+| `/compare` | **Regression Diff** — pick two traces, get a step diff + cost/latency delta + drift score |
+| `/guardrails` | Working rule engine UI (not just a mock): toggle PII detection, prompt-injection guarding, tool denylists, budget caps, and loop auto-cutoff; each rule can flag or hard-block |
+
 ## Roadmap
 
-- Guardrail rule engine: block/flag tool calls matching PII patterns or a
-  denylist before they execute (prompt-injection and data-leak defense)
+- Wire the guardrail rules UI to the SDK so toggles actually gate
+  `trace.step()` calls at runtime, not just annotate traces after the fact
 - Persistent storage adapter (Postgres/Supabase) with multi-tenant API keys
 - Slack/webhook alerting on anomaly detection
-- "Replay" view: step through a failed trace's inputs/outputs side-by-side
-  with a similar successful run to spot the divergence
 - Statistical (not just threshold-based) anomaly detection once enough
   historical traces are collected per agent
 

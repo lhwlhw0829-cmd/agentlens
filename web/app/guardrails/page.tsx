@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { IconShield } from "@/components/icons";
+import { Switch } from "@/components/Switch";
 import { DEFAULT_RULES, GuardrailRule } from "@/lib/guardrails";
 
 const CATEGORY_LABEL: Record<string, string> = {
@@ -67,14 +68,14 @@ export default function GuardrailsPage() {
       </header>
 
       <div className="mb-6 flex gap-4 text-sm">
-        <div className="rounded-lg border border-border bg-panel px-4 py-3">
+        <div className="glass rounded-2xl border border-white/5 px-4 py-3 shadow-card">
           <div className="text-xs text-muted">Active rules</div>
           <div className="text-xl font-semibold">
             {activeCount}
             <span className="text-sm text-muted">/{rules.length}</span>
           </div>
         </div>
-        <div className="rounded-lg border border-border bg-panel px-4 py-3">
+        <div className="glass rounded-2xl border border-white/5 px-4 py-3 shadow-card">
           <div className="text-xs text-muted">Blocking</div>
           <div className="text-xl font-semibold text-danger">{blockingCount}</div>
         </div>
@@ -89,8 +90,8 @@ export default function GuardrailsPage() {
         {rules.map((rule) => (
           <div
             key={rule.id}
-            className={`rounded-xl border p-4 transition ${
-              rule.enabled ? "border-border bg-panel" : "border-border/50 bg-panel/40"
+            className={`glass rounded-2xl border p-4 shadow-card transition ${
+              rule.enabled ? "border-white/5" : "border-white/5 opacity-60"
             }`}
           >
             <div className="flex items-start justify-between gap-4">
@@ -106,24 +107,15 @@ export default function GuardrailsPage() {
                 </p>
               </div>
 
-              <button
-                onClick={() => toggleRule(rule.id)}
-                className={`relative h-6 w-11 shrink-0 rounded-full transition ${
-                  rule.enabled ? "bg-accent" : "bg-white/10"
-                }`}
-                aria-pressed={rule.enabled}
-                aria-label={`Toggle ${rule.name}`}
-              >
-                <span
-                  className={`absolute top-0.5 h-5 w-5 rounded-full bg-bg transition-transform ${
-                    rule.enabled ? "translate-x-5" : "translate-x-0.5"
-                  }`}
-                />
-              </button>
+              <Switch
+                checked={rule.enabled}
+                onChange={() => toggleRule(rule.id)}
+                label={`Toggle ${rule.name}`}
+              />
             </div>
 
             {rule.enabled && (
-              <div className="mt-3 flex items-center gap-2 border-t border-border pt-3 text-xs">
+              <div className="mt-3 flex items-center gap-2 border-t border-white/5 pt-3 text-xs">
                 <span className="text-muted">On violation:</span>
                 {(["flag", "block"] as const).map((action) => (
                   <button
@@ -146,7 +138,7 @@ export default function GuardrailsPage() {
         ))}
       </div>
 
-      <div className="mt-8 rounded-lg border border-dashed border-border p-4 text-xs text-muted">
+      <div className="mt-8 rounded-2xl border border-dashed border-white/10 p-4 text-xs text-muted">
         Rules configured here are saved to your browser for this demo. In the
         production build, this maps to a rules table keyed by API key /
         agent, evaluated inside the SDK's <code>trace.step()</code> context
