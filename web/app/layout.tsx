@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Sidebar } from "@/components/Sidebar";
 
 export const metadata: Metadata = {
   title: "AgentLens — AI Agent Observability",
@@ -15,7 +16,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="min-h-screen bg-bg text-white antialiased">
-        {children}
+        <Sidebar />
+        <div className="pl-60">{children}</div>
       </body>
     </html>
   );
