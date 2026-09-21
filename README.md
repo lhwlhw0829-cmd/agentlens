@@ -1,5 +1,7 @@
 # AgentLens
 
+**Live demo:** https://web-three-pi-34.vercel.app
+
 **Production observability and guardrails for LLM agents.** Instrument any
 agent with a two-line SDK wrapper and get a live dashboard of every step,
 tool call, token spent, and — critically — automatic detection of the

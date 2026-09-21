@@ -49,7 +49,7 @@ export default function DashboardPage() {
           </p>
         </div>
         <a
-          href="https://github.com/"
+          href="https://github.com/lhwlhw0829-cmd/agentlens"
           className="rounded-lg border border-border px-3 py-1.5 text-sm text-muted hover:text-white"
         >
           View on GitHub
